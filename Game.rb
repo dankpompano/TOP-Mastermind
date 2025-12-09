@@ -9,33 +9,37 @@ class Game
   # pegs = Array.new(10, pegs_map = {black: 0, white: 0})
   
   def initialize
-    @rounds = 0
+    @rounds = 1
   end
 
   def play_game
     board = Board.new
     comp = Computer.new
-    comp_code = comp.comp_code
+    comp_code = comp.generate_code
+    comp_code = 1234 #TESTING DELETE ME LATER
     pegs = Array.new(10, pegs_map = {black: 0, white: 0})
     
-    until (@rounds == 10 || check_win(pegs_hash, round))
-      play_round(board, pegs, @rounds, comp_code)
-    end
+    # until (@rounds == 10 || check_win(pegs, @round))
+    play_round(board, pegs, @rounds, comp_code)
+    # end
   end
 
   def play_round(board, pegs_hash, round, comp_code)
     puts "Enter in four digits (1-6) to crack the code...
-    \n White-correct number. Black-correct number and placement.
+    \n White: correct number. Black: correct number and placement.
     \n You have 9 attempts
-    \n You are on attempt: #{round}"
+    \n You are on attempt: #{@rounds}"
     code = gets.chomp
-    valid = update_board(round, code)
+    valid = board.update_board(@rounds, code)
 
     if valid
-      update_pegs(@rounds, code, comp_code)
+      update_pegs( pegs_hash, @rounds, code, comp_code)
       ++@rounds
+      puts comp_code
+      puts pegs_hash.flatten
+      puts "valid"
     else
-      
+      puts "error"
     end
 
   end
@@ -47,14 +51,14 @@ class Game
     return false
   end
 
-  def update_pegs(round, player_code, comp_code)
-    player_code.each_with_index do |number, index|
+  def update_pegs(pegs_hash, round, player_code, comp_code)
+    player_code.each_char.with_index do |number, index|
       #black pegs
       if player_code[index] == comp_code[index]
-        pegs[round][:black] += 1 
+        pegs_hash[round][:black] += 1 
       #white pegs
       elsif (player_code[index].count(comp_code)) && (player_code[index] != comp_code[index]) #need to check whether a digit of the player code ever appears in the comp code, while also not being in the same index to prevent over counting
-        pegs[round][:white] += 1
+        pegs_hash[round][:white] += 1
       end
       true
     end

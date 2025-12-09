@@ -15,7 +15,7 @@ class Board
 
   def update_board (row, code)
     # @board[row][code]
-    @board[row][] = code.digits.reverse #splits our number into digits [1234] -> [1,2,3,4]
+    @board[row] = code.to_s.chars.map(&:to_i) #splits our number into digits [1234] -> [1,2,3,4]
     return true
   end
 
