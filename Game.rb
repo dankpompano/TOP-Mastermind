@@ -35,8 +35,8 @@ class Game
     if valid
       update_pegs( pegs_hash, @rounds, code, comp_code)
       ++@rounds
-      puts comp_code
-      puts pegs_hash.flatten
+      # puts comp_code
+      # puts pegs_hash.flatten
       puts "valid"
     else
       puts "error"
@@ -52,13 +52,21 @@ class Game
   end
 
   def update_pegs(pegs_hash, round, player_code, comp_code)
-    player_code.each_char.with_index do |number, index|
+    player_code = player_code.to_i.digits.reverse #converts to string then puts it in an array 
+    comp_code = comp_code.to_i.digits.reverse
+    # puts player_code.class
+    # puts comp_code.class
+    # puts player_code.flatten
+    player_code.each_with_index do |number, index|
       #black pegs
+      # puts player_code + 010101
+      # puts comp_code + 101010
       if player_code[index] == comp_code[index]
-        pegs_hash[round][:black] += 1 
+        pegs_hash[round][:black] += 1
       #white pegs
-      elsif (player_code[index].count(comp_code)) && (player_code[index] != comp_code[index]) #need to check whether a digit of the player code ever appears in the comp code, while also not being in the same index to prevent over counting
+      elsif (player_code.count{ |num| }) # && (player_code[index] != comp_code[index]) #need to check whether a digit of the player code ever appears in the comp code, while also not being in the same index to prevent over counting
         pegs_hash[round][:white] += 1
+        puts pegs_hash.flatten
       end
       true
     end
