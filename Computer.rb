@@ -4,8 +4,10 @@ class Computer
     end
 
     def generate_code
-      rand_code = 4.times.map { rand(1..6) }.join
-      return rand_code
+      digits = (1..6).to_a
+      unique_digits = digits.sample(4) # Select 4 unique digits randomly
+      random_number = unique_digits.join.to_i # Join the array into a string and convert to an integer
+      return random_number
     end
 end 
 
