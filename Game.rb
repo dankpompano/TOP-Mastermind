@@ -54,22 +54,31 @@ class Game
   def update_pegs(pegs_hash, round, player_code, comp_code)
     player_code = player_code.to_i.digits.reverse #converts to string then puts it in an array 
     comp_code = comp_code.to_i.digits.reverse
+    
+    unmatched_player = []
+    unmatched_comp = []
     # puts player_code.class
     # puts comp_code.class
     # puts player_code.flatten
     player_code.each_with_index do |number, index|
       #black pegs
-      # puts player_code + 010101
-      # puts comp_code + 101010
       if player_code[index] == comp_code[index]
         pegs_hash[round][:black] += 1
       #white pegs
-      elsif (player_code.count{ |num| }) # && (player_code[index] != comp_code[index]) #need to check whether a digit of the player code ever appears in the comp code, while also not being in the same index to prevent over counting
-        pegs_hash[round][:white] += 1
-        puts pegs_hash.flatten
+      else
+        unmatched_player << player_code[index]
+        unmatched_comp << comp_code[index]
       end
-      true
+      
     end
-    false
+
+    #count white pegs
+    unmatched_player.each do |number|
+      if unmatched_comp.include?(number)
+        pegs_hash[round][:white] += 1
+        unmatched_comp.delete_at(unmatched_comp.index(num)) #prevents over counting
+      end
+    end
+    
   end
 end
